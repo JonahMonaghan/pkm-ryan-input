@@ -3,6 +3,8 @@ use std::io::{self, BufReader, Read};
 use std::thread::sleep;
 use std::time::Duration;
 use enigo::{Enigo, Keyboard, Key, Direction, Settings};
+use std::path::PathBuf;
+use dirs::home_dir;
 
 fn emulate_action(digit: char){
     let mut e = Enigo::new(&Settings::default()).unwrap();
@@ -46,8 +48,9 @@ fn read_digits_in_fixed_chunks(path: &str, chunk_size: usize) -> io::Result<()> 
 }
 
 fn main() -> io::Result<()> {
-    let file_path = "~/Constant/e-const.txt";
+    let mut file_path = home_dir().unwrap_or_else(|| PathBuf::from("/"));
+    file_path.push("Constant/e-const.txt");
     let chunk_size = 1000; // Adjust chunk size to your needs
 
-    read_digits_in_fixed_chunks(file_path, chunk_size)
+    read_digits_in_fixed_chunks(file_path.to_str().unwrap(), chunk_size)
 }
