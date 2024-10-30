@@ -57,7 +57,7 @@ fn emulate_action(digit: char, enigo: &mut Enigo) {
             sleep(Duration::from_millis(50));
             enigo.key(Key::LeftArrow, Direction::Release).unwrap();
         }
-        _ => println!("Action: No action for {}", digit),
+        _ => print!(""),
     }
     sleep(Duration::from_millis(1000)); // Delay after each action
 }
@@ -117,6 +117,8 @@ fn main() -> io::Result<()> {
 
     print!("\x1B[2J\x1B[H"); // Clear screen and move cursor to top-left
     print_action_table();
+
+    sleep(Duration::from_millis(10000)); //Startup Delay
 
     let mut file_path = home_dir().unwrap_or_else(|| PathBuf::from("/"));
     file_path.push("Constant/e-const.txt");
