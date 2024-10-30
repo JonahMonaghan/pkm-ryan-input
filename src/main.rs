@@ -7,13 +7,13 @@ use enigo::{Enigo, Keyboard, Key, Direction, Settings};
 fn emulate_action(digit: char){
     let mut e = Enigo::new(&Settings::default()).unwrap();
     match digit {
-        '0' | '7' => e.key(Key::Return, Direction::Press).unwrap(),
-        '1' | '8' | 'e' => e.key(Key::Z, Direction::Press).unwrap(),
-        '2' | '9' | 'f' => e.key(Key::X, Direction::Press).unwrap(),
-        '3' | 'a'=> e.key(Key::UpArrow, Direction::Press).unwrap(),
-        '4' | 'b'=> e.key(Key::RightArrow, Direction::Press).unwrap(),
-        '5' | 'c'=> e.key(Key::DownArrow, Direction::Press).unwrap(),
-        '6' | 'd'=> e.key(Key::LeftArrow, Direction::Press).unwrap(),
+        '0' | '7' => e.key(Key::Return, Direction::Click).unwrap(),
+        '1' | '8' | 'e' => e.key(Key::Unicode('z'), Direction::Click).unwrap(),
+        '2' | '9' | 'f' => e.key(Key::Unicode('x'), Direction::Click).unwrap(),
+        '3' | 'a'=> e.key(Key::UpArrow, Direction::Click).unwrap(),
+        '4' | 'b'=> e.key(Key::RightArrow, Direction::Click).unwrap(),
+        '5' | 'c'=> e.key(Key::DownArrow, Direction::Click).unwrap(),
+        '6' | 'd'=> e.key(Key::LeftArrow, Direction::Click).unwrap(),
         _ => println!("Action: No action for {}", digit),
     }
 }
