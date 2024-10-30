@@ -6,6 +6,20 @@ use enigo::{Enigo, Keyboard, Key, Direction, Settings};
 use std::path::PathBuf;
 use dirs::home_dir;
 
+fn print_action_table() {
+    println!("+-----------+------------------+");
+    println!("| Digit(s)  | Action           |");
+    println!("+-----------+------------------+");
+    println!("| 0, 7      | Start            |");
+    println!("| 1, 8, e   | B                |");
+    println!("| 2, 9, f   | A                |");
+    println!("| 3, a      | Up               |");
+    println!("| 4, b      | Right            |");
+    println!("| 5, c      | Down             |");
+    println!("| 6, d      | Left             |");
+    println!("+-----------+------------------+\n");
+}
+
 fn emulate_action(digit: char, enigo: &mut Enigo) {
     match digit {
         '0' | '7' => {
@@ -45,7 +59,7 @@ fn emulate_action(digit: char, enigo: &mut Enigo) {
         }
         _ => println!("Action: No action for {}", digit),
     }
-    sleep(Duration::from_millis(2000)); // Delay after each action
+    sleep(Duration::from_millis(1000)); // Delay after each action
 }
 
 fn display_digits_with_arrow(digits: &[char], current_index: usize) {
@@ -96,6 +110,10 @@ fn read_digits_in_fixed_chunks(path: &str, chunk_size: usize, enigo: &mut Enigo)
 
 fn main() -> io::Result<()> {
     let mut enigo = Enigo::new(&Settings::default()).unwrap();
+
+    // Print the action table at the start of the program
+    print_action_table();
+
     let mut file_path = home_dir().unwrap_or_else(|| PathBuf::from("/"));
     file_path.push("Constant/e-const.txt");
     let chunk_size = 1000; // Adjust chunk size to your needs
