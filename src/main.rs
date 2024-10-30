@@ -63,24 +63,24 @@ fn emulate_action(digit: char, enigo: &mut Enigo) {
 }
 
 fn display_digits_with_arrow(digits: &[char], current_index: usize) {
-    // Move the cursor up to keep the table visible
-    print!("\x1B[10A"); // Moves cursor up 10 lines (adjust if needed based on table height)
+    // Move the cursor below the table to display digits
+    print!("\x1B[15;1H"); // Move cursor to row 15, column 1 (adjust if needed)
 
     let start = current_index.saturating_sub(5);
     let end = (current_index + 6).min(digits.len());
     let display_chunk: Vec<_> = digits[start..end].iter().collect();
 
-    // Print the digit view with the current digit in the middle
-    print!("\r"); // Move cursor to the start of the line
+    // Clear the current line, then print the digit view
+    print!("\x1B[K"); // Clear the line
     for &digit in &display_chunk {
         print!("{}", digit);
     }
 
     // Move to the next line and print the arrow under the current digit
-    print!("\n");
+    print!("\n\x1B[K"); // Clear the line before printing the arrow
     let arrow_position = (5.min(current_index)).min(display_chunk.len() - 1);
     for _ in 0..arrow_position {
-        print!(" "); // Spaces to align the arrow
+        print!(" ");
     }
     println!("▲");
 
