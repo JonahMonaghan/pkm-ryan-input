@@ -45,7 +45,7 @@ fn emulate_action(digit: char, enigo: &mut Enigo) {
         }
         _ => println!("Action: No action for {}", digit),
     }
-    sleep(Duration::from_millis(100)); // Delay after each action
+    sleep(Duration::from_millis(2000)); // Delay after each action
 }
 
 fn display_digits_with_arrow(digits: &[char], current_index: usize) {
@@ -69,7 +69,6 @@ fn display_digits_with_arrow(digits: &[char], current_index: usize) {
 
     // Flush output and add a small delay
     std::io::Write::flush(&mut std::io::stdout()).expect("Flush failed");
-    sleep(Duration::from_millis(500));
 }
 
 fn read_digits_in_fixed_chunks(path: &str, chunk_size: usize, enigo: &mut Enigo) -> io::Result<()> {
