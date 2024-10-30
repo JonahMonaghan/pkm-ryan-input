@@ -48,28 +48,48 @@ fn emulate_action(digit: char, enigo: &mut Enigo) {
     sleep(Duration::from_millis(100)); // Delay after each action
 }
 
+fn display_digits_with_arrow(digits: &[char], current_index: usize) {
+    let start = current_index.saturating_sub(5);
+    let end = (current_index + 6).min(digits.len());
+    let display_chunk: Vec<_> = digits[start..end].iter().collect();
+
+    // Print the digit view with the current digit in the middle
+    print!("\r"); // Move cursor to the start of the line
+    for &digit in &display_chunk {
+        print!("{}", digit);
+    }
+
+    // Move to the next line and print the arrow under the current digit
+    print!("\n");
+    let arrow_position = (5.min(current_index)).min(display_chunk.len() - 1);
+    for _ in 0..arrow_position {
+        print!(" "); // Spaces to align the arrow
+    }
+    println!("▲");
+
+    // Flush output and add a small delay
+    std::io::Write::flush(&mut std::io::stdout()).expect("Flush failed");
+    sleep(Duration::from_millis(500));
+}
+
 fn read_digits_in_fixed_chunks(path: &str, chunk_size: usize, enigo: &mut Enigo) -> io::Result<()> {
     let file = File::open(path)?;
     let mut reader = BufReader::new(file);
     let mut buffer = vec![0; chunk_size]; // Fixed-size buffer
-    let delay = Duration::from_secs(5); // 5-second delay
 
-    // Read the file in fixed-size chunks
     loop {
-        let bytes_read = reader.read(&mut buffer)?; // Read up to `chunk_size` bytes
+        let bytes_read = reader.read(&mut buffer)?;
         if bytes_read == 0 {
             break; // End of file reached
         }
 
-        // Convert only the bytes read into a string and process the chunk
         let chunk = String::from_utf8_lossy(&buffer[..bytes_read]);
-        println!("Chunk: {}", chunk);
-        for digit in chunk.chars(){
-            println!("{}", digit);
-            emulate_action(digit, enigo);
-            sleep(delay); // 1-second delay after each action
+        let digits: Vec<char> = chunk.chars().collect();
+
+        for (i, &digit) in digits.iter().enumerate() {
+            display_digits_with_arrow(&digits, i); // Show current, previous, and next digits with arrow
+            emulate_action(digit, enigo); // Perform action based on the current digit
         }
-        // Optionally, you can process each chunk here instead of printing.
     }
 
     Ok(())
