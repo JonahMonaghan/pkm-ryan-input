@@ -62,7 +62,7 @@ fn emulate_action(digit: char, enigo: &mut Enigo) {
     sleep(Duration::from_millis(1000)); // Delay after each action
 }
 
-fn display_digits_with_arrow(digits: &[char], current_index: usize) {
+fn display_digits_with_arrow(digits: &[char], current_index: usize, digit_count: &i64) {
     // Move the cursor below the table to display digits
     print!("\x1B[15;1H"); // Move cursor to row 15, column 1 (adjust if needed)
 
@@ -84,6 +84,10 @@ fn display_digits_with_arrow(digits: &[char], current_index: usize) {
     }
     println!("▲");
 
+    // Move to the next line and print the arrow under the current digit
+    print!("\n\x1B[K"); // Clear the line before printing the arrow
+    println!("Number of Digits: {}", digit_count);
+
     // Flush output and add a small delay
     std::io::Write::flush(&mut std::io::stdout()).expect("Flush failed");
     sleep(Duration::from_millis(500));
@@ -93,6 +97,7 @@ fn read_digits_in_fixed_chunks(path: &str, chunk_size: usize, enigo: &mut Enigo)
     let file = File::open(path)?;
     let mut reader = BufReader::new(file);
     let mut buffer = vec![0; chunk_size]; // Fixed-size buffer
+    let mut current_digit_count: i64 = -1;
 
     loop {
         let bytes_read = reader.read(&mut buffer)?;
@@ -104,7 +109,8 @@ fn read_digits_in_fixed_chunks(path: &str, chunk_size: usize, enigo: &mut Enigo)
         let digits: Vec<char> = chunk.chars().collect();
 
         for (i, &digit) in digits.iter().enumerate() {
-            display_digits_with_arrow(&digits, i); // Show current, previous, and next digits with arrow
+            current_digit_count += 1;
+            display_digits_with_arrow(&digits, i, &current_digit_count); // Show current, previous, and next digits with arrow
             emulate_action(digit, enigo); // Perform action based on the current digit
         }
     }
