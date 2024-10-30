@@ -63,6 +63,9 @@ fn emulate_action(digit: char, enigo: &mut Enigo) {
 }
 
 fn display_digits_with_arrow(digits: &[char], current_index: usize) {
+    // Move the cursor up to keep the table visible
+    print!("\x1B[10A"); // Moves cursor up 10 lines (adjust if needed based on table height)
+
     let start = current_index.saturating_sub(5);
     let end = (current_index + 6).min(digits.len());
     let display_chunk: Vec<_> = digits[start..end].iter().collect();
@@ -83,6 +86,7 @@ fn display_digits_with_arrow(digits: &[char], current_index: usize) {
 
     // Flush output and add a small delay
     std::io::Write::flush(&mut std::io::stdout()).expect("Flush failed");
+    sleep(Duration::from_millis(500));
 }
 
 fn read_digits_in_fixed_chunks(path: &str, chunk_size: usize, enigo: &mut Enigo) -> io::Result<()> {
@@ -111,7 +115,7 @@ fn read_digits_in_fixed_chunks(path: &str, chunk_size: usize, enigo: &mut Enigo)
 fn main() -> io::Result<()> {
     let mut enigo = Enigo::new(&Settings::default()).unwrap();
 
-    // Print the action table at the start of the program
+    print!("\x1B[2J\x1B[H"); // Clear screen and move cursor to top-left
     print_action_table();
 
     let mut file_path = home_dir().unwrap_or_else(|| PathBuf::from("/"));
