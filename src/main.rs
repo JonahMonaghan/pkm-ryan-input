@@ -24,7 +24,7 @@ fn read_digits_in_fixed_chunks(path: &str, chunk_size: usize) -> io::Result<()> 
     let file = File::open(path)?;
     let mut reader = BufReader::new(file);
     let mut buffer = vec![0; chunk_size]; // Fixed-size buffer
-    let delay = Duration::from_secs(1); // 1-second delay
+    let delay = Duration::from_secs(5); // 5-second delay
 
     // Read the file in fixed-size chunks
     loop {
