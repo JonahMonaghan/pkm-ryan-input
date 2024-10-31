@@ -39,22 +39,22 @@ fn emulate_action(digit: char, enigo: &mut Enigo) {
         }
         '3' | 'a' => {
             enigo.key(Key::UpArrow, Direction::Press).unwrap();
-            sleep(Duration::from_millis(50));
+            sleep(Duration::from_millis(200));
             enigo.key(Key::UpArrow, Direction::Release).unwrap();
         }
         '4' | 'b' => {
             enigo.key(Key::RightArrow, Direction::Press).unwrap();
-            sleep(Duration::from_millis(50));
+            sleep(Duration::from_millis(200));
             enigo.key(Key::RightArrow, Direction::Release).unwrap();
         }
         '5' | 'c' => {
             enigo.key(Key::DownArrow, Direction::Press).unwrap();
-            sleep(Duration::from_millis(50));
+            sleep(Duration::from_millis(200));
             enigo.key(Key::DownArrow, Direction::Release).unwrap();
         }
         '6' | 'd' => {
             enigo.key(Key::LeftArrow, Direction::Press).unwrap();
-            sleep(Duration::from_millis(50));
+            sleep(Duration::from_millis(200));
             enigo.key(Key::LeftArrow, Direction::Release).unwrap();
         }
         _ => print!(""),
