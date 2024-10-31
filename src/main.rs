@@ -31,35 +31,37 @@ fn emulate_action(digit: char, enigo: &mut Enigo) {
             enigo.key(Key::Unicode('z'), Direction::Press).unwrap();
             sleep(Duration::from_millis(50));
             enigo.key(Key::Unicode('z'), Direction::Release).unwrap();
+            sleep(Duration::from_millis(450));
         }
         '2' | '9' | 'f' => {
             enigo.key(Key::Unicode('x'), Direction::Press).unwrap();
             sleep(Duration::from_millis(50));
             enigo.key(Key::Unicode('x'), Direction::Release).unwrap();
+            sleep(Duration::from_millis(450));
         }
         '3' | 'a' => {
             enigo.key(Key::UpArrow, Direction::Press).unwrap();
-            sleep(Duration::from_millis(200));
+            sleep(Duration::from_millis(500));
             enigo.key(Key::UpArrow, Direction::Release).unwrap();
         }
         '4' | 'b' => {
             enigo.key(Key::RightArrow, Direction::Press).unwrap();
-            sleep(Duration::from_millis(200));
+            sleep(Duration::from_millis(500));
             enigo.key(Key::RightArrow, Direction::Release).unwrap();
         }
         '5' | 'c' => {
             enigo.key(Key::DownArrow, Direction::Press).unwrap();
-            sleep(Duration::from_millis(200));
+            sleep(Duration::from_millis(500));
             enigo.key(Key::DownArrow, Direction::Release).unwrap();
         }
         '6' | 'd' => {
             enigo.key(Key::LeftArrow, Direction::Press).unwrap();
-            sleep(Duration::from_millis(200));
+            sleep(Duration::from_millis(500));
             enigo.key(Key::LeftArrow, Direction::Release).unwrap();
         }
         _ => print!(""),
     }
-    sleep(Duration::from_millis(1000)); // Delay after each action
+    sleep(Duration::from_millis(500)); // Delay after each action
 }
 
 fn display_digits_with_arrow(digits: &[char], current_index: usize, digit_count: &i64) {
